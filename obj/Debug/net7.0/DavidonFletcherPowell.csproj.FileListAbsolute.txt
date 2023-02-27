@@ -1,0 +1,15 @@
+C:\C# Projects\DavidonFletcherPowell\bin\Debug\net7.0\DavidonFletcherPowell.exe
+C:\C# Projects\DavidonFletcherPowell\bin\Debug\net7.0\DavidonFletcherPowell.deps.json
+C:\C# Projects\DavidonFletcherPowell\bin\Debug\net7.0\DavidonFletcherPowell.runtimeconfig.json
+C:\C# Projects\DavidonFletcherPowell\bin\Debug\net7.0\DavidonFletcherPowell.dll
+C:\C# Projects\DavidonFletcherPowell\bin\Debug\net7.0\DavidonFletcherPowell.pdb
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.csproj.AssemblyReference.cache
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.GeneratedMSBuildEditorConfig.editorconfig
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.AssemblyInfoInputs.cache
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.AssemblyInfo.cs
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.csproj.CoreCompileInputs.cache
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.dll
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\refint\DavidonFletcherPowell.dll
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.pdb
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\DavidonFletcherPowell.genruntimeconfig.cache
+C:\C# Projects\DavidonFletcherPowell\obj\Debug\net7.0\ref\DavidonFletcherPowell.dll
