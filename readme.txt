@@ -1,0 +1,2 @@
+The Davidon–Fletcher–Powell formula finds the solution to the secant equation that is closest to the current estimate and satisfies the curvature condition.
+It was the first quasi-Newton method to generalize the secant method to a multidimensional problem. 
