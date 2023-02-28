@@ -2,7 +2,6 @@
 {
     class Program
     {
-        const double eps = 0.00001; // accuracy for method
         double[,] d = new double[,] // initial state
         {
             {1,0,0},
@@ -11,7 +10,9 @@
         };
         public static void Main()
         {
-
+            //input accuracy E
+            //input step h
+            //input data
         }
         public double[,] Calculations(double[,] d, double eps, double x)
         {
