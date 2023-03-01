@@ -25,16 +25,17 @@ class DavidonFletcherPowell
     }
 
     // функция поиска шага
-    private static double LineSearch(Func<double[], double> function, double[] point, double[] direction, double epsilon)
+    private static double LineSearch(Func<double[], double> function, double[,] point, double[] direction, double epsilon)
     {
         double alpha = 1.0;
         double loBound = 0.0;
         double hiBound = Double.PositiveInfinity;
+        double[] newPoint = FromMatrixToVector(point);
         while (true)
         {
-            double[] candidate = Add(point, Scale(alpha, direction));
+            double[] candidate = Add(newPoint, Scale(alpha, direction));
             double functionValue = function(candidate);
-            double loValue = function(Add(point, Scale(loBound, direction)));
+            double loValue = function(Add(newPoint, Scale(loBound, direction)));
             if (functionValue > loValue + epsilon)
             {
                 hiBound = alpha;
@@ -42,7 +43,7 @@ class DavidonFletcherPowell
             }
             else
             {
-                double hiValue = function(Add(point, Scale(hiBound, direction)));
+                double hiValue = function(Add(newPoint, Scale(hiBound, direction)));
                 if (functionValue > hiValue + epsilon)
                 {
                     loBound = alpha;
@@ -57,15 +58,16 @@ class DavidonFletcherPowell
     }
 
     // функция градиента
-    private static double[] Gradient(Func<double[], double> function, double[] point, double epsilon)
+    private static double[] Gradient(Func<double[], double> function, double[,] point, double epsilon)
     {
         int n = point.Length;
+        double[] newPoint = FromMatrixToVector(point);
         double[] result = new double[n];
         for (int i = 0; i < n; i++)
         {
             double[] perturbation = new double[n];
             perturbation[i] = epsilon;
-            result[i] = (function(Add(point, perturbation)) - function(Subtract(point, perturbation))) / (2 * epsilon);
+            result[i] = (function(Add(newPoint, perturbation)) - function(Subtract(newPoint, perturbation))) / (2 * epsilon);
         }
         return result;
     }
@@ -81,7 +83,17 @@ class DavidonFletcherPowell
         }
         return result;
     }
-
+    private static double[] Add(double[,] vector1, double[] vector2)
+    {
+        int n = vector1.Length;
+        double[] result = new double[n];
+        double[] newVector = FromMatrixToVector(vector1);
+        for (int i = 0; i < n; i++)
+        {
+            result[i] = newVector[i] + vector2[i];
+        }
+        return result;
+    }
     // функция вычитания векторов
     private static double[] Subtract(double[] vector1, double[] vector2)
     {
@@ -90,6 +102,17 @@ class DavidonFletcherPowell
         for (int i = 0; i < n; i++)
         {
             result[i] = vector1[i] - vector2[i];
+        }
+        return result;
+    }
+    private static double[] Subtract(double[] vector1, double[,] vector2)
+    {
+        int n = vector1.Length;
+        double[] result = new double[n];
+        double[] newVector = FromMatrixToVector(vector2);
+        for (int i = 0; i < n; i++)
+        {
+            result[i] = vector1[i] - newVector[i];
         }
         return result;
     }
@@ -106,20 +129,36 @@ class DavidonFletcherPowell
         return result;
     }
 
+    //функция умножения матрицы на скаляр
+    private static double[,] ScaleMatrix(double scalar, double[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        int m = matrix.GetLength(1);
+        double[,] result = new double[n, m];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                result[i, j] = matrix[i, j] * scalar;
+            }
+        }
+        return result;
+    }
+
     // функция умножения матрицы на вектор
     private static double[] MatrixOnVectorDotProduct(double[] vector, double[,] matrix)
     {
         int n = vector.Length;
         int m = matrix.GetLength(1);
-        double[] result = new double[m];
-        for (int j = 0; j < m; j++)
+        double[] result = new double[n];
+        for (int i = 0; i < n; i++)
         {
             double sum = 0.0;
-            for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
             {
                 sum += vector[i] * matrix[i, j];
             }
-            result[j] = sum;
+            result[i] = sum;
         }
         return result;
     }
@@ -145,14 +184,15 @@ class DavidonFletcherPowell
         }
         return result;
     }
-    private static double VectorOnVectorDotProduct(double[] vector1, double[] vector2)
+    // функция скалярного произведения векторов
+    private static double VectorOnVectorDotProduct(double[] vector1, double[,] vector2)
     {
         int n = vector1.GetLength(0);
         int p = vector2.GetLength(1);
         double result = 0;
         for (int i = 0; i < p; i++)
         {
-            result += vector1[i] * vector2[i];
+            result += vector1[i] * vector2[0,i];
         }
         return result;
     }
@@ -217,6 +257,37 @@ class DavidonFletcherPowell
         }
         return result;
     }
+    private static double[,] MatrixTranspose(double[] vector)
+    {
+        int n = vector.Length;
+        double[,] result = new double[n, 1];
+        for (int i = 0; i < n; i++)
+        {
+            result[i, 0] = vector[i];
+        }
+        return result;
+    }
+    private static double[,] FromVectorToMatrix(double[] vector)
+    {
+        int n = vector.GetLength(0);
+        double[,] result = new double[n, 1];
+        for (int i = 0; i < n; i++)
+        {
+            result[i, 0] = vector[i];
+        }
+        return result;
+    }
+    private static double[] FromMatrixToVector(double[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        double[] result = new double[n];
+        for (int i = 0; i < n; i++)
+        {
+            result[i] = matrix[i, 0];
+        }
+        return result;
+    }
+    // функция создания единичной матрицы размерностью n
     private static double[,] IdentityMatrix(int n)
     {
         double[,] result = new double[n, n];
@@ -226,16 +297,16 @@ class DavidonFletcherPowell
         }
         return result;
     }
-    public static double[] Minimize(Func<double[], double> f, double[] x0)
+    public static double[,] Minimize(Func<double[], double> f, double[,] x0)
     {
         // Начальное приближение
-        double[] x = x0;
+        double[,] x = x0;
         // Инициализируем единичную матрицу
-        double[,] H = IdentityMatrix(x.Length);
+        double[,] A0 = IdentityMatrix(x.Length);
         // Устанавливаем максимальное число итераций
-        int maxIterations = 100;
-        // Устанавливаем пороговое значение для нормы градиента
-        double gradientTolerance = 1e-6;
+        int maxIterations = 1000;
+        // Устанавливаем пороговое значение для нормы градиента, т.н. точность
+        double gradientTolerance = 1e-8;
 
         for (int k = 0; k < maxIterations; k++)
         {
@@ -249,28 +320,32 @@ class DavidonFletcherPowell
             }
 
             // Вычисляем направление спуска
-            double[] p = MatrixOnVectorDotProduct(grad, H);
+            double[] d = MatrixOnVectorDotProduct(grad, A0);
 
             // Вычисляем длину шага по направлению p
-            double alpha = LineSearch(f, x, p, gradientTolerance);
+            double t = LineSearch(f, x, d, gradientTolerance);
 
             // Выполняем шаг оптимизации
-            double[] xNew = Add(x, Scale(alpha, p));
-
+            double[] xNew = Add(x, Scale(t, d));
+            double[,] xNewMatrix = FromVectorToMatrix(xNew);
             // Вычисляем разность градиентов в точках xNew и x
-            double[] gradNew = Gradient(f, xNew, gradientTolerance);
+            double[] gradNew = Gradient(f, xNewMatrix, gradientTolerance);
             double[] deltaGrad = Subtract(gradNew, grad);
 
             // Вычисляем разность аргументов в точках xNew и x
             double[] deltaX = Subtract(xNew, x);
 
-            // Вычисляем матрицу Bk+1
-            double[,] B = MatrixAddition(H, MatrixOuterProduct(deltaGrad, deltaGrad) / VectorOnVectorDotProduct(deltaGrad, deltaX)
-                - MatrixOuterProduct(MatrixOnVectorDotProduct(deltaGrad, H), MatrixOnVectorDotProduct(deltaGrad, H)) / VectorOnVectorDotProduct(MatrixOnVectorDotProduct(deltaGrad, H), deltaGrad));
+            double[,] numerator1 = MatrixOnMatrixDotProduct(FromVectorToMatrix(deltaX), MatrixTranspose(deltaX));
+            double[,] numerator2 = MatrixOnMatrixDotProduct(MatrixOnMatrixDotProduct(MatrixOnMatrixDotProduct(A0, FromVectorToMatrix(deltaGrad)), MatrixTranspose(deltaGrad)), A0);
+            double denominetor1 = VectorOnVectorDotProduct(deltaGrad, MatrixTranspose(deltaX));
+            double denominetor2 = VectorOnVectorDotProduct(deltaGrad, MatrixOnMatrixDotProduct(MatrixTranspose(deltaGrad), A0));
+
+            // Вычисляем матрицу Ak+1
+            double[,] A = MatrixSubtraction(ScaleMatrix(1 / denominetor1, numerator1), ScaleMatrix(1 / denominetor2, numerator2));
 
             // Обновляем x и H
-            x = xNew;
-            H = B;
+            x = xNewMatrix;
+            A0 = A;
         }
 
         // Если не удалось достичь заданной точности за максимальное число итераций,
@@ -289,5 +364,3 @@ class DavidonFletcherPowell
         return Math.Sqrt(norm);
     }
 }
-
-
