@@ -192,7 +192,7 @@ class DavidonFletcherPowell
         double result = 0;
         for (int i = 0; i < p; i++)
         {
-            result += vector1[i] * vector2[0,i];
+            result += vector1[i] * vector2[0, i];
         }
         return result;
     }
@@ -297,6 +297,16 @@ class DavidonFletcherPowell
         }
         return result;
     }
+    // функция для вычисления нормы вектора
+    private static double Norm(double[] x)
+    {
+        double norm = 0;
+        for (int i = 0; i < x.Length; i++)
+        {
+            norm += x[i] * x[i];
+        }
+        return Math.Sqrt(norm);
+    }
     public static double[,] Minimize(Func<double[], double> f, double[,] x0)
     {
         // Начальное приближение
@@ -306,7 +316,7 @@ class DavidonFletcherPowell
         // Устанавливаем максимальное число итераций
         int maxIterations = 1000;
         // Устанавливаем пороговое значение для нормы градиента, т.н. точность
-        double gradientTolerance = 1e-8;
+        double gradientTolerance = 1e-6;
 
         for (int k = 0; k < maxIterations; k++)
         {
@@ -352,15 +362,5 @@ class DavidonFletcherPowell
         // возвращаем последнее
 
         return x;
-    }
-    // функция для вычисления нормы вектора
-    private static double Norm(double[] x)
-    {
-        double norm = 0;
-        for (int i = 0; i < x.Length; i++)
-        {
-            norm += x[i] * x[i];
-        }
-        return Math.Sqrt(norm);
     }
 }

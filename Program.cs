@@ -12,7 +12,10 @@
         {
             //input accuracy E
             //input step h
-            Func<double[], double> createFunction = (x) => 0.26*(x[0]*x[0]+x[1]*x[1]) - 0.48*x[0]*x[1];//input data 
+            Func<double[], double> createFunction = (x) => 0.26 * (x[0] * x[0] + x[1] * x[1]) - 0.48 * x[0] * x[1];//input data
+            // (1 - x[0]) * (1 - x[0]) + 100 * (x[1] - x[0] * x[0]) * (x[1] - x[0] * x[0])
+            // x[0]*x[0]+x[1]-11)*(x[0]*x[0]+x[1]-11)+(x[0]+x[1]*x[1]-7)*(x[0]+x[1]*x[1]-7   Himmelblau function
+            // 0.26*(x[0]*x[0]+x[1]*x[1]) - 0.48*x[0]*x[1]
             double[,] x0 = new double[2, 1] { { 0.5 }, { 1 } };
             double[,] result = DavidonFletcherPowell.Minimize(createFunction, x0);
 
@@ -24,10 +27,6 @@
                     System.Console.Write("   " + result[i, j]);
                 }
             }
-        }
-        public double[,] Calculations(double[,] d, double eps, double x)
-        {
-            return d;
         }
     }
 }
