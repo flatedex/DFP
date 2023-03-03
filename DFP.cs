@@ -2,29 +2,7 @@ using System;
 
 class DavidonFletcherPowell
 {
-    // функция вычисления длины вектора
-    private static double Magnitude(double[] vector)
-    {
-        double result = 0;
-        for (int i = 0; i < vector.Length; i++)
-        {
-            result += vector[i];
-        }
-
-        return Math.Sqrt(result);
-    }
-    // функция вычисления обратного вектора
-    private static double[] Negate(double[] vector)
-    {
-        double[] result = new double[vector.Length];
-        for (int i = 0; i < vector.Length; i++)
-        {
-            result[i] = -vector[i];
-        }
-        return result;
-    }
-
-    // функция поиска шага
+    // функция поиска шага t
     private static double LineSearch(Func<double[], double> function, double[,] point, double[] direction, double epsilon)
     {
         double alpha = 1.0;
@@ -57,7 +35,7 @@ class DavidonFletcherPowell
         }
     }
 
-    // функция градиента
+    // функция нахождения градиента
     private static double[] Gradient(Func<double[], double> function, double[,] point, double epsilon)
     {
         int n = point.Length;
@@ -196,37 +174,6 @@ class DavidonFletcherPowell
         }
         return result;
     }
-
-    // функция внешнего произведения векторов
-    private static double[,] MatrixOuterProduct(double[] vector1, double[] vector2)
-    {
-        int n = vector1.Length;
-        double[,] result = new double[n, n];
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                result[i, j] = vector1[i] * vector2[j];
-            }
-        }
-        return result;
-    }
-
-    // функция сложения матриц
-    private static double[,] MatrixAddition(double[,] matrix1, double[,] matrix2)
-    {
-        int n = matrix1.GetLength(0);
-        int m = matrix1.GetLength(1);
-        double[,] result = new double[n, m];
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                result[i, j] = matrix1[i, j] + matrix2[i, j];
-            }
-        }
-        return result;
-    }
     // функция вычитания матриц
     private static double[,] MatrixSubtraction(double[,] matrix1, double[,] matrix2)
     {
@@ -242,21 +189,7 @@ class DavidonFletcherPowell
         }
         return result;
     }
-    // функция транспонирования матрицы
-    private static double[,] MatrixTranspose(double[,] matrix)
-    {
-        int n = matrix.GetLength(0);
-        int m = matrix.GetLength(1);
-        double[,] result = new double[m, n];
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                result[j, i] = matrix[i, j];
-            }
-        }
-        return result;
-    }
+    // функция превращения вектора [vector.Length] в матрицу [0, vector.Length]
     private static double[,] MatrixTranspose(double[] vector)
     {
         int n = vector.Length;
@@ -267,6 +200,7 @@ class DavidonFletcherPowell
         }
         return result;
     }
+    // фукнция перевода вектора [vector.Length] в матрицу [vector.Length, 0]
     private static double[,] FromVectorToMatrix(double[] vector)
     {
         int n = vector.GetLength(0);
